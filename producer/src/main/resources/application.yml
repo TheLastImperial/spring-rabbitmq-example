@@ -1,0 +1,22 @@
+spring:
+    application:
+        name: producer
+    datasource:
+        driverClassName: org.postgresql.Driver
+        url: jdbc:postgresql://localhost:5432/test
+        username: test
+        password: test
+    jpa:
+        hibernate:
+            ddlAuto: update
+    rabbitmq:
+        host: localhost
+        port: 5672
+        username: guest
+        password: guest
+app:
+    rabbitmq:
+        queue: "queue"
+    payments:
+        initStatus: "IN_PROCESS"
+
