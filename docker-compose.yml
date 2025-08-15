@@ -14,7 +14,11 @@ services:
     ports:
       - "5672:5672"
       - "15672:15672"
-
+  kafka:
+    image: apache/kafka:latest
+    container_name: kafka
+    ports:
+      - "9092:9092"
   producer:
     image: tli/producer:0.0.1
     build: producer/
@@ -23,12 +27,14 @@ services:
       - "8080:80"
     environment:
       - SERVER_PORT=80
+      - SPRING_PROFILES_ACTIVE=rabbit
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/test
       - SPRING_DATASOURCE_USER=test
       - SPRING_DATASOURCE_PASSWORD=test
       - SPRING_RABBITMQ_HOST=rabbitmq
       - SPRING_RABBITMQ_USERNAME=guest
       - SPRING_RABBITMQ_PASSWORD=guest
+      - SPRING_KAFKA_BOOTSTRAPSERVERS=kafka:9092
       - APP_RABBITMQ_QUEUE=fila
       - APP_PAYMENTS_INITSTATUS=PROCESANDO
 
@@ -37,11 +43,13 @@ services:
     build: consumer/
     container_name: consumer
     environment:
+      - SPRING_PROFILES_ACTIVE=rabbit
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/test
       - SPRING_DATASOURCE_USER=test
       - SPRING_DATASOURCE_PASSWORD=test
       - SPRING_RABBITMQ_HOST=rabbitmq
       - SPRING_RABBITMQ_USERNAME=guest
       - SPRING_RABBITMQ_PASSWORD=guest
+      - SPRING_KAFKA_BOOTSTRAPSERVERS=kafka:9092
       - APP_RABBITMQ_QUEUE=fila
 

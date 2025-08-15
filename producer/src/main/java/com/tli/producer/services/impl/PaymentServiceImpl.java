@@ -15,7 +15,7 @@ import com.tli.producer.services.interfaces.ProducerService;
 @Service
 public class PaymentServiceImpl implements PaymentService {
 
-    
+
     private String initStatus;
     private final PaymentRepository paymentRepository;
     private final ProducerService producerService;
@@ -35,6 +35,13 @@ public class PaymentServiceImpl implements PaymentService {
         PaymentEntity saved = paymentRepository.save(toSave);
         PaymentRS response = new PaymentRS();
         BeanUtils.copyProperties(saved, response);
+        return response;
+    }
+
+    public PaymentRS get(Long id){
+        PaymentEntity data = paymentRepository.findById(id).get();
+        PaymentRS response = new PaymentRS();
+        BeanUtils.copyProperties(data, response);
         return response;
     }
 
