@@ -19,6 +19,13 @@ services:
     container_name: kafka
     ports:
       - "9092:9092"
+  redis:
+    image: redis:8.2-alpine
+    container_name: redis
+    restart: always
+    ports:
+      - "6379:6379"
+    command: redis-server --loglevel warning --requirepass 12345678
   producer:
     image: tli/producer:0.0.1
     build: producer/

@@ -2,10 +2,17 @@ server:
     port: 8081
 spring:
     application:
-        name: consumer
+        name: ^project.name^
+        version: ^project.version^
+        description: ^project.description^
     profiles:
         active:
             - kafka
+    data:
+        redis:
+            host: localhost
+            port: 6379
+            password: "12345678"
     datasource:
         driverClassName: org.postgresql.Driver
         url: jdbc:postgresql://localhost:5432/test
@@ -14,6 +21,7 @@ spring:
     jpa:
         hibernate:
             ddlAuto: update
+
     rabbitmq:
         host: localhost
         port: 5672
