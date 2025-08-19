@@ -4,3 +4,8 @@ scrape_configs:
     scrape_interval: 15s # This can be adjusted based on our needs
     static_configs:
       - targets: ['172.18.0.1:8081', 'consumer:8081']
+  - job_name: 'producer'
+    metrics_path: '/actuator/prometheus'
+    scrape_interval: 15s # This can be adjusted based on our needs
+    static_configs:
+      - targets: ['172.18.0.1:8080', 'producer:8080']

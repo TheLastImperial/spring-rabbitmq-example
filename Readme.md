@@ -48,9 +48,13 @@ Body:
 ```json
 {
     "id": 1,
-    "status": "ACEPTADO"
+    "status": "PAID"
 }
 ```
+
+### Swagger
+
+Go to `http://localhost:8080/swagger-ui.html`.
 
 ## Consumer MS
 
@@ -69,3 +73,7 @@ Body: None
 ### Swagger
 
 Go to `http://localhost:8081/swagger-ui.html`.
+
+## Grafana
+
+Recomended Grafana dashboard ID `19004`.

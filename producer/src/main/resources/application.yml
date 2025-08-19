@@ -3,7 +3,9 @@ spring:
         active:
             - kafka
     application:
-        name: producer
+        name: ^project.name^
+        version: ^project.version^
+        description: ^project.description^
     datasource:
         driverClassName: org.postgresql.Driver
         url: jdbc:postgresql://localhost:5432/test
@@ -19,6 +21,17 @@ spring:
         password: guest
     kafka:
         bootstrap-servers: "localhost:9092"
+
+management:
+    endpoints:
+        web:
+            exposure:
+                include: "*"
+    enabledByDefault: false
+    metrics:
+        tags:
+            application: "${spring.application.name}"
+
 app:
     mq:
         queue: "payment"
