@@ -35,7 +35,15 @@ spring:
             properties:
                 # spring.json.trusted.packages: "com.tli.consumer.api.models.rq.PaymentStatusRQ"
                 spring.json.use.type.headers: false
-
+management:
+    endpoints:
+        web:
+            exposure:
+                include: "*"
+    enabledByDefault: false
+    metrics:
+        tags:
+            application: ${spring.application.name}
 app:
     mq:
         queue: "payment"

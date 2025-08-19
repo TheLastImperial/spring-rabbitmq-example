@@ -9,6 +9,7 @@ import com.tli.consumer.api.models.rq.PaymentStatusRQ;
 import com.tli.consumer.api.models.rs.PaymentRS;
 import com.tli.consumer.domain.entities.PaymentEntity;
 import com.tli.consumer.domain.repositories.PaymentRepository;
+import com.tli.consumer.exceptions.UnprocessableEntityException;
 import com.tli.consumer.services.interfaces.PaymentService;
 
 import lombok.AllArgsConstructor;
@@ -18,17 +19,22 @@ import lombok.AllArgsConstructor;
 public class PaymentServiceImpl implements PaymentService{
     private final PaymentRepository paymentRepository;
 
-    @Cacheable("payments")
-    public PaymentEntity updateStatus(PaymentStatusRQ rq) {
-        PaymentEntity toUpdate = paymentRepository.findById(rq.getId()).get();
+    @CachePut(value="payments", key = "#payment.id")
+    public PaymentRS updateStatus(PaymentStatusRQ rq) {
+        PaymentRS response = new PaymentRS();
+        PaymentEntity toUpdate = paymentRepository.findById(rq.getId())
+            .orElseThrow(UnprocessableEntityException::new);
         toUpdate.setStatus(rq.getStatus());
-        return paymentRepository.save(toUpdate);
+        PaymentEntity paymentUpdated = paymentRepository.save(toUpdate);
+        BeanUtils.copyProperties(paymentUpdated, response);
+        return response;
     }
 
-    @CachePut(value="payments", key = "#payment.id")
+    @Cacheable("payments")
     public PaymentRS get(Long id) {
         PaymentRS response = new PaymentRS();
-        PaymentEntity payment = paymentRepository.findById(id).get();
+        PaymentEntity payment = paymentRepository.findById(id)
+            .orElseThrow(UnprocessableEntityException::new);
         BeanUtils.copyProperties(payment, response);
         return response;
     }

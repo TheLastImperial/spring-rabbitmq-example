@@ -26,6 +26,23 @@ services:
     ports:
       - "6379:6379"
     command: redis-server --loglevel warning --requirepass 12345678
+  promethus:
+    image: prom/prometheus:v3.5.0
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    extra_hosts:
+      - "MASTER_HOST:172.17.0.1"
+  grafana:
+    image: grafana/grafana-enterprise:12.1.0
+    container_name: grafana
+    volumes:
+      - ./grafana:/var/lib/grafana
+    ports:
+      - "3000:3000"
+    user: "1000:1000"
   producer:
     image: tli/producer:0.0.1
     build: producer/
